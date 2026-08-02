@@ -11,6 +11,7 @@
   <div class="app">
     <aside class="sidebar">
       <div class="brand"><div class="brand-mark">EP</div><div><h1>EASYPHOTO</h1><p>by PAPAJEKPRINT</p></div></div>
+      <div class="theme-switcher" aria-label="Theme selector"><button class="theme-choice active" data-theme="light" type="button">Light</button><button class="theme-choice" data-theme="dark" type="button">Dark</button><button class="theme-choice" data-theme="colorful" type="button">Colorful</button></div>
       <div class="tabs" role="tablist">
         <button class="tab active" data-tab="id" type="button">ID PHOTO</button>
         <button class="tab" data-tab="polaroid" type="button">POLAROID</button>
@@ -42,7 +43,7 @@
           <div id="sizeList" class="size-list"></div>
         </section>
         <section class="card paper-controls" data-mode="id">
-          <div class="section-title"><span>4</span><h2>Paper Size</h2></div>
+          <div class="section-title"><span>5</span><h2>Paper Size</h2></div>
           <div class="grid four paper-buttons"></div>
           <div class="shared-controls"></div>
         </section>
@@ -143,6 +144,16 @@
             <button id="copyColor" class="active" type="button">Colored</button>
             <button id="copyBlack" type="button">Black & White</button>
           </div>
+        </section>
+
+        <section class="card photocopy-tools">
+          <div class="section-title"><span>4</span><h2>Crop & Rotate</h2></div>
+          <div class="segmented-copy">
+            <button id="editCopyFront" class="active" type="button">Edit Front</button>
+            <button id="editCopyBack" type="button">Edit Back</button>
+          </div>
+          <div class="crop-shell copy-crop-shell"><img id="copyCropImage" alt="Photocopy crop area" /></div>
+          <div class="tool-row"><button id="copyRotate" type="button">Rotate</button><button id="applyCopyCrop" class="primary" type="button">Apply Crop</button></div>
         </section>
         <section class="card paper-controls" data-mode="photocopy">
           <div class="section-title"><span>4</span><h2>Paper Size</h2></div>
