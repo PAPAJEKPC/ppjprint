@@ -1,187 +1,172 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>EASYPHOTO by PAPAJEKPRINT</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ID Photo Layout Generator</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
+  <div class="app-shell">
     <aside class="sidebar">
-      <div class="brand"><div class="brand-mark">EP</div><div><h1>EASYPHOTO</h1><p>by PAPAJEKPRINT</p></div></div>
-      <div class="tabs" role="tablist">
-        <button class="tab active" data-tab="id" type="button">ID PHOTO</button>
-        <button class="tab" data-tab="polaroid" type="button">POLAROID</button>
-        <button class="tab" data-tab="photocopy" type="button">ID PHOTOCOPY</button>
-      </div>
+      <div class="brand"><div class="logo">ID</div><div><h1>ID Photo Layout</h1><p>300 DPI print sheet generator</p></div></div>
 
-      <div id="idTab" class="tab-panel active">
-        <section class="card">
-          <div class="section-title"><span>1</span><h2>Upload Photo</h2></div>
-          <label id="idDrop" class="drop-zone" tabindex="0">
-            <input id="idFile" type="file" accept="image/jpeg,image/png" hidden />
-            <div id="idPrompt" class="upload-prompt"><strong>Drag & drop photo</strong><small>or click to browse JPG, PNG, PDF, Word, Excel, PowerPoint</small></div>
-            <img id="idThumb" alt="ID thumbnail" hidden />
-          </label>
-        </section>
-        <section class="card">
-          <div class="section-title"><span>2</span><h2>Preset Sizes</h2></div>
-          <div id="presetGrid" class="grid two"></div>
-        </section>
-        <section class="card">
-          <div class="section-title"><span>3</span><h2>Sizes & Quantity</h2></div>
-          <div class="form-grid">
-            <label>Width<input id="width" type="number" min="0.1" step="0.01" value="2"></label>
-            <label>Height<input id="height" type="number" min="0.1" step="0.01" value="2"></label>
-            <label>Unit<select id="unit"><option>inch</option><option>mm</option><option>cm</option></select></label>
-            <label>Quantity<input id="quantity" type="number" min="1" step="1" value="4"></label>
-          </div>
-          <button id="addSize" class="primary full" type="button">Add Size</button>
-          <div id="sizeList" class="size-list"></div>
-        </section>
-        <section class="card paper-controls" data-mode="id">
-          <div class="section-title"><span>5</span><h2>Paper Size</h2></div>
-          <div class="grid four paper-buttons"></div>
-          <div class="shared-controls"></div>
-        </section>
-      </div>
+      <label class="mode-dropdown-wrap" for="modeSelect">
+        <span>Layout Mode</span>
+        <select id="modeSelect" class="mode-dropdown" aria-label="Layout mode">
+          <option value="id-photo">ID PHOTO</option>
+          <option value="polaroid">POLAROID</option>
+          <option value="id-xerox">ID XEROX</option>
+        </select>
+      </label>
 
-      <div id="polaroidTab" class="tab-panel">
-        <section class="card accordion-card open">
-          <button class="section-title accordion-toggle" type="button"><span>1</span><h2>Upload Photo</h2></button>
-          <div class="accordion-content">
-          <label id="polaroidDrop" class="drop-zone" tabindex="0">
-            <input id="polaroidFile" type="file" accept="image/jpeg,image/png" multiple hidden />
-            <div id="polaroidPrompt" class="upload-prompt"><strong>Drag & drop photos</strong><small>or click to browse multiple JPG / PNG files</small></div>
-            <img id="polaroidThumb" alt="Polaroid thumbnail" hidden />
-          </label>
-          </div>
-        </section>
-        <section class="card accordion-card paper-controls" data-mode="polaroid">
-          <button class="section-title accordion-toggle" type="button"><span>2</span><h2>Paper Size</h2></button>
-          <div class="accordion-content">
-          <div class="grid four paper-buttons"></div>
-          <div class="manual-paper">
-            <h3>Input Paper Size Manually</h3>
-            <div class="form-grid">
-              <label>Paper Width<input id="manualPaperWidth" type="number" min="1" step="0.01" value="4"></label>
-              <label>Paper Height<input id="manualPaperHeight" type="number" min="1" step="0.01" value="6"></label>
-              <label>Unit<select id="manualPaperUnit"><option>inch</option><option>mm</option><option>cm</option></select></label>
-              <button id="applyManualPaper" class="primary" type="button">Apply</button>
-            </div>
-          </div>
-          <div class="shared-controls"></div>
-          </div>
-        </section>
-        <section class="card accordion-card">
-          <button class="section-title accordion-toggle" type="button"><span>3</span><h2>Polaroid Sizes</h2></button>
-          <div class="accordion-content">
-          <div id="polaroidSizeGrid" class="grid two"></div>
-          <label class="custom-label">Custom Label<input id="polaroidCustomLabel" type="text" placeholder="e.g. Summer 2026" maxlength="40"></label>
-<div id="filmCustomize" class="film-customize" hidden>
-          <div class="film-options">
-            <label class="custom-label">FilmStrip Size<select id="filmStripSize"><option value="2x6">2 × 6 in</option><option value="30x90">30 × 90 mm</option></select></label>
-            <label class="custom-label">Photos<select id="filmPhotoCount"><option value="3">3 photos</option><option value="4">4 photos</option></select></label>
-          </div>
-          <label class="custom-label">FilmStrip Layout<select id="filmLayout"><option value="A">Design A</option><option value="B">Design B</option><option value="C">Design C</option><option value="D">Design D</option></select></label>
-          <label class="custom-label">FilmStrip Font<select id="filmFont"><option value="system-ui">Modern</option><option value="Arial">Arial</option><option value="Helvetica">Helvetica</option><option value="Verdana">Verdana</option><option value="Tahoma">Tahoma</option><option value="Trebuchet MS">Trebuchet</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times New Roman</option><option value="Garamond">Garamond</option><option value="Courier New">Courier New</option><option value="Lucida Console">Lucida Console</option><option value="Brush Script MT">Brush Script</option><option value="Comic Sans MS">Fun Handwritten</option><option value="Impact">Bold Impact</option><option value="Arial Black">Arial Black</option><option value="Palatino Linotype">Palatino</option><option value="Segoe Print">Segoe Print</option><option value="Segoe Script">Segoe Script</option></select></label>
-          <div class="film-options">
-            <label class="custom-label">Label Position<select id="filmLabelPosition"><option value="bottom">Bottom</option><option value="top">Top</option><option value="center">Center</option><option value="left">Left Side</option><option value="right">Right Side</option></select></label>
-            <label class="custom-label">Label Size<input id="filmLabelSize" type="number" min="8" max="72" value="34"></label>
-            <label class="custom-label">Label Color<input id="filmLabelColor" type="color" value="#111111"></label>
-          </div>
-          <div class="film-options">
-            <label class="custom-label">Move X<input id="filmLabelX" type="range" min="-160" max="160" value="0"></label>
-            <label class="custom-label">Move Y<input id="filmLabelY" type="range" min="-220" max="220" value="0"></label>
-          </div>
-          <label class="custom-label">FilmStrip Design<select id="filmStripDesign"><option value="classic">Classic White</option><option value="white">White Minimal</option><option value="pink">Pink Floral</option><option value="blue">Blue Party</option><option value="orange">Orange Pop</option><option value="green">Green Cute</option><option value="purple">Purple Glow</option><option value="teal">Teal Hearts</option><option value="custom">Custom Background</option></select></label>
-          <label id="filmBgDrop" class="drop-zone mini-drop" tabindex="0">
-            <input id="filmBgFile" type="file" accept="image/jpeg,image/png" hidden />
-            <div id="filmBgPrompt" class="upload-prompt"><strong>Upload FilmStrip background</strong><small>JPG / PNG custom design</small></div>
-            <img id="filmBgThumb" alt="FilmStrip background thumbnail" hidden />
-          </label>
+      <section id="uploadCard" class="card">
+        <div class="section-title"><span>1</span><h2>Upload Photo</h2></div>
+        <label id="dropZone" class="drop-zone" tabindex="0">
+          <input id="fileInput" type="file" accept="image/png,image/jpeg" multiple hidden />
+          <input id="cameraInput" type="file" accept="image/*" capture="environment" multiple hidden />
+          <div class="upload-icon">⇧</div>
+          <strong>Drop photo here</strong>
+          <small>or choose Browse Photo or Use Camera</small>
+          <div class="upload-choice"><button type="button" id="browsePhotoBtn" class="secondary">Browse Photo</button><button type="button" id="cameraPhotoBtn" class="secondary">Use Camera</button></div>
+          <img id="thumb" alt="Uploaded thumbnail" hidden />
+        </label>
+        <button id="uploadCropBtn" class="wide secondary upload-crop" disabled>Crop photo</button>
+        <div id="photoGallery" class="photo-gallery"></div>
+      </section>
 
-
-          <label id="filmStickerDrop" class="drop-zone mini-drop" tabindex="0">
-            <input id="filmStickerFile" type="file" accept="image/png" multiple hidden />
-            <div id="filmStickerPrompt" class="upload-prompt"><strong>Upload design PNGs</strong><small>Multiple, resizable + draggable</small></div>
-            <img id="filmStickerThumb" alt="FilmStrip design thumbnail" hidden />
-          </label>
-          <label class="custom-label">Design PNG Size <b id="filmStickerSizeText">0.50 in</b><input id="filmStickerSize" type="range" min="0.1" max="2" step="0.05" value="0.5"></label>
-          <label id="filmFontDrop" class="drop-zone mini-drop" tabindex="0">
-            <input id="filmFontFile" type="file" accept=".ttf,.otf,font/ttf,font/otf" hidden />
-            <div id="filmFontPrompt" class="upload-prompt"><strong>Upload custom font</strong><small>TTF / OTF for FilmStrip label</small></div>
-            <div id="filmFontName" class="font-file-name" hidden></div>
-          </label>
-          </div>
-          </div>        </section>
-
-      </div>
-
-      <div id="photocopyTab" class="tab-panel">
-        <section class="card">
+      <section id="xeroxCard" class="xerox-panel" hidden>
+        <section class="card xerox-card">
           <div class="section-title"><span>1</span><h2>Upload Front Photo</h2></div>
-          <label id="copyFrontDrop" class="drop-zone" tabindex="0">
-            <input id="copyFrontFile" type="file" accept="image/jpeg,image/png" hidden />
-            <div id="copyFrontPrompt" class="upload-prompt"><strong>Drag & drop front</strong><small>or click to browse JPG, PNG, PDF, Word, Excel, PowerPoint</small></div>
-            <img id="copyFrontThumb" alt="Front ID thumbnail" hidden />
+          <label id="xeroxFrontDrop" class="drop-zone xerox-drop" tabindex="0">
+            <input id="xeroxFrontInput" type="file" accept="image/png,image/jpeg,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" hidden>
+            <input id="xeroxFrontCamera" type="file" accept="image/*" capture="environment" hidden>
+            <strong>Drag & drop front</strong>
+            <small>choose Browse Photo or Use Camera</small>
+            <div class="upload-choice"><button type="button" id="browseFrontBtn" class="secondary">Browse Photo</button><button type="button" id="cameraFrontBtn" class="secondary">Use Camera</button></div>
+            <img id="xeroxFrontThumb" alt="Front ID thumbnail" hidden>
           </label>
         </section>
-        <section class="card">
+        <section class="card xerox-card">
           <div class="section-title"><span>2</span><h2>Upload Back Photo</h2></div>
-          <label id="copyBackDrop" class="drop-zone" tabindex="0">
-            <input id="copyBackFile" type="file" accept="image/jpeg,image/png" hidden />
-            <div id="copyBackPrompt" class="upload-prompt"><strong>Drag & drop back</strong><small>or click to browse JPG, PNG, PDF, Word, Excel, PowerPoint</small></div>
-            <img id="copyBackThumb" alt="Back ID thumbnail" hidden />
+          <label id="xeroxBackDrop" class="drop-zone xerox-drop" tabindex="0">
+            <input id="xeroxBackInput" type="file" accept="image/png,image/jpeg,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" hidden>
+            <input id="xeroxBackCamera" type="file" accept="image/*" capture="environment" hidden>
+            <strong>Drag & drop back</strong>
+            <small>choose Browse Photo or Use Camera</small>
+            <div class="upload-choice"><button type="button" id="browseBackBtn" class="secondary">Browse Photo</button><button type="button" id="cameraBackBtn" class="secondary">Use Camera</button></div>
+            <img id="xeroxBackThumb" alt="Back ID thumbnail" hidden>
           </label>
         </section>
-        <section class="card">
+        <section class="card xerox-card">
           <div class="section-title"><span>3</span><h2>Copy Mode</h2></div>
-          <div class="segmented-copy">
-            <button id="copyColor" class="active" type="button">Colored</button>
-            <button id="copyBlack" type="button">Black & White</button>
+          <div class="xerox-segmented">
+            <button id="xeroxColorBtn" class="primary" type="button" data-xerox-mode="color">Colored</button>
+            <button id="xeroxBwBtn" class="secondary" type="button" data-xerox-mode="bw">Black & White</button>
           </div>
         </section>
+        <section class="card xerox-card">
+          <div class="section-title"><span>4</span><h2>Crop Only</h2></div>
+          <div class="xerox-segmented"><button id="editFront" class="primary" type="button">Crop Front</button><button id="editBack" class="secondary" type="button">Crop Back</button></div>
+        </section>
+      </section>
 
-        <section class="card photocopy-tools">
-          <div class="section-title"><span>4</span><h2>Crop & Rotate</h2></div>
-          <div class="segmented-copy">
-            <button id="editCopyFront" class="active" type="button">Edit Front</button>
-            <button id="editCopyBack" type="button">Edit Back</button>
-          </div>
-          <div class="crop-shell copy-crop-shell"><img id="copyCropImage" alt="Photocopy crop area" /></div>
-          <div class="tool-row"><button id="copyRotate" type="button">Rotate</button><button id="applyCopyCrop" class="primary" type="button">Apply Crop</button></div>
-        </section>
-        <section class="card paper-controls" data-mode="photocopy">
-          <div class="section-title"><span>4</span><h2>Paper Size</h2></div>
-          <div class="grid four paper-buttons"></div>
-          <div class="shared-controls"></div>
-        </section>
-      </div>
-      <section class="card processor">
-        <div class="section-title"><span>⚙</span><h2>Image Processing</h2></div>
-        <div class="crop-shell"><img id="cropImage" alt="Crop area" /></div>
-        <label class="range">Zoom <b id="zoomText">100%</b><input id="zoom" type="range" min="0.5" max="3" step="0.01" value="1"></label>
-        <label class="range">Brightness <b id="brightnessText">100%</b><input id="brightness" type="range" min="50" max="150" value="100"></label>
-        <label class="range">Contrast <b id="contrastText">100%</b><input id="contrast" type="range" min="50" max="150" value="100"></label>
-        <div class="tool-row"><button id="rotate" type="button">Rotate</button><button id="flip" type="button">Flip Horizontal</button><button id="removeBg" type="button">Remove BG</button></div>
-        <p id="notice" class="notice" hidden>Background removal is a placeholder button for future AI processing.</p>
+      <section id="presetCard" class="card">
+        <div class="section-title"><span>2</span><h2 id="presetTitle">Preset Sizes</h2></div>
+        <div class="button-grid" id="presetButtons"></div>
+      </section>
+
+      <section id="polaroidDesignCard" class="card polaroid-only" hidden>
+        <div class="section-title"><span>3</span><h2>Polaroid Design</h2></div>
+        <label>Design Style
+          <select id="polaroidDesign">
+            <option value="classic">Classic White</option>
+            <option value="pastel">Pastel Blue</option>
+            <option value="cream">Cream Paper</option>
+            <option value="dark">Dark Frame</option>
+            <option value="custom">Custom Background</option>
+          </select>
+        </label>
+        <label id="customBgLabel" class="custom-bg" style="display:none">Upload custom background
+          <input id="customBgInput" type="file" accept="image/png,image/jpeg">
+          <small>JPG/PNG used behind each Instax frame</small>
+        </label>
+      </section>
+
+      <section id="sizesCard" class="card">
+        <div class="section-title"><span id="sizeSectionNumber">3</span><h2>Sizes & Quantity</h2></div>
+        <div class="form-grid three">
+          <label>Width <input id="photoW" type="number" min="0.1" step="0.1" value="2"></label>
+          <label>Height <input id="photoH" type="number" min="0.1" step="0.1" value="2"></label>
+          <label>Unit <select id="unit"><option>inch</option><option>mm</option><option>cm</option></select></label>
+        </div>
+        <div class="form-grid two">
+          <label>Columns <input id="cols" type="number" min="1" max="20" value="2"></label>
+          <label>Rows <input id="rows" type="number" min="1" max="20" value="2"></label>
+        </div>
+        <div class="quantity-line"><strong id="copyFormula">2 × 2 = 4 copies</strong><button id="addSize" class="secondary">Add size</button></div>
+        <div id="sizeList" class="size-list"></div>
+      </section>
+
+      <section id="imageProcessingCard" class="card">
+        <div class="section-title"><span>4</span><h2>Image Processing</h2></div>
+        <button id="openCrop" class="wide secondary" disabled>Crop photo</button>
+        <label class="range-row">Zoom <output id="zoomOut">100%</output><input id="zoom" type="range" min="0.5" max="3" value="1" step="0.01"></label>
+        <div class="tool-row"><button id="rotL" class="secondary">↺ Rotate</button><button id="rotR" class="secondary">↻ Rotate</button><button id="flip" class="secondary">⇋ Flip</button></div>
+        <label class="range-row">Brightness <output id="brightOut">100%</output><input id="brightness" type="range" min="50" max="150" value="100"></label>
+        <label class="range-row">Contrast <output id="contrastOut">100%</output><input id="contrast" type="range" min="50" max="150" value="100"></label>
       </section>
     </aside>
 
-    <main class="main">
+    <main class="main-panel">
       <header class="topbar">
-        <div><h2 id="previewTitle">ID Photo Preview</h2><p><span id="pageCount">1 page</span> · <span id="totalPhotos">0 photos</span> · 300 DPI</p></div>
-        <div class="actions"><label class="header-theme">Theme<select id="themeSelect"><option value="light">Light</option><option value="dark">Dark</option><option value="colorful">Colorful</option></select></label><button id="previewZoomOut" type="button">− Zoom</button><button id="previewZoomIn" type="button">+ Zoom</button><button id="printOutput" type="button">Print</button><button id="downloadPng" type="button">Download PNG</button><button id="downloadPdf" class="primary" type="button">Download PDF</button></div>
+        <div class="preview-title-row"><div><h2>Printable Preview</h2><p id="stats">Page 1 of 1 · 4 photos</p></div><div class="button-grid paper paper-inline" id="paperButtons"></div></div>
+        <div class="actions"><button id="downloadPng">Download PNG</button><button id="downloadPdf">Download PDF</button><button id="printBtn" class="primary">Print</button></div>
       </header>
-      <div class="preview-wrap"><canvas id="canvas"></canvas></div>
+      <section class="paper-panel compact-paper-panel">
+        <button id="paperToggle" class="paper-toggle" type="button" aria-expanded="false">
+          <span>Margin and Spacing</span><span class="chevron">⌄</span>
+        </button>
+        <div id="paperPanelBody" class="paper-panel-body" hidden>
+          <div class="paper-controls compact-checks">
+            <div class="dropdown-sliders">
+              <label class="margin-spacing-control">Margin <output id="marginOut">0.20 in</output><input id="margin" type="range" min="0" max="1" value="0.2" step="0.05"></label>
+              <label class="margin-spacing-control">Spacing <output id="spacingOut">0.06 in</output><input id="spacing" type="range" min="0" max="0.5" value="0.06" step="0.01"></label>
+            </div>
+            <div class="checks inline">
+              <label><input id="landscape" type="checkbox"> Landscape</label>
+              <label><input id="guides" type="checkbox" checked> Show Cutting Guides</label>
+              <label><input id="labels" type="checkbox" checked> Show Labels</label>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="preview-wrap"><canvas id="previewCanvas"></canvas></div>
     </main>
   </div>
+
+  <dialog id="cropDialog">
+    <div class="modal-head"><h2>Crop image</h2><button id="closeCrop" aria-label="Close">×</button></div>
+    <div class="crop-area"><img id="cropImage" alt="Crop workspace"></div>
+    <div class="rotate-slider-row"><label>Rotate <output id="cropRotateOut">0°</output><input id="cropRotateSlider" type="range" min="-180" max="180" value="0" step="1"></label></div>
+    <div class="modal-actions"><button id="resetCrop" class="secondary">Reset</button><button id="cropRotateBtn" class="secondary">Rotate 90°</button><button id="applyCrop" class="primary">Apply crop</button></div>
+  </dialog>
+
+
+  <dialog id="cameraDialog" class="camera-dialog">
+    <div class="modal-head"><h2>Select Camera</h2><button id="closeCamera" aria-label="Close">×</button></div>
+    <div class="camera-body">
+      <label>Camera source <select id="cameraSelect"></select></label>
+      <div class="camera-preview-box"><video id="cameraVideo" autoplay playsinline muted></video><div id="idCameraGuide" class="id-camera-guide" hidden><span>STANDARD ID SIZE</span></div></div>
+      <canvas id="cameraCanvas" hidden></canvas>
+      <p id="cameraStatus" class="camera-status">Camera preview will appear here.</p>
+    </div>
+    <div class="modal-actions"><button id="refreshCameras" class="secondary">Refresh</button><button id="captureCamera" class="primary">Capture Photo</button></div>
+  </dialog>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
