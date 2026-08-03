@@ -121,11 +121,11 @@ async function startCamera(deviceId){
  catch(err){$('cameraStatus').textContent='Unable to start camera: '+err.message;}
 }
 async function openCamera(target){
- cameraTarget=target;if($('idCameraGuide')) $('idCameraGuide').hidden=!(target==='front'||target==='back');$('cameraDialog').showModal();const devices=await listCameras();await startCamera(devices[0]?.deviceId);
+ cameraTarget=target;if($('idCameraGuide')) $('idCameraGuide').hidden=!(target==='front'||target==='back');if($('photoCameraGuide')) $('photoCameraGuide').hidden=!(target==='general'&&currentMode==='id-photo');$('cameraDialog').showModal();const devices=await listCameras();await startCamera(devices[0]?.deviceId);
 }
 $('cameraSelect').addEventListener('change',e=>startCamera(e.target.value));
 $('refreshCameras').addEventListener('click',async()=>{const devices=await listCameras();await startCamera(devices[0]?.deviceId);});
-$('closeCamera').addEventListener('click',async()=>{await stopCamera();$('cameraDialog').close();});
+$('closeCamera').addEventListener('click',async()=>{await stopCamera();if($('idCameraGuide')) $('idCameraGuide').hidden=true;if($('photoCameraGuide')) $('photoCameraGuide').hidden=true;$('cameraDialog').close();});
 $('captureCamera').addEventListener('click',async()=>{
  const video=$('cameraVideo');if(!video.videoWidth)return;
  const c=$('cameraCanvas'),ctx2=c.getContext('2d');
@@ -143,7 +143,7 @@ $('captureCamera').addEventListener('click',async()=>{
  }else{
    c.width=video.videoWidth;c.height=video.videoHeight;ctx2.drawImage(video,0,0,c.width,c.height);
  }
- c.toBlob(async blob=>{const file=new File([blob],`camera-${Date.now()}.png`,{type:'image/png'});if(cameraTarget==='front')loadXeroxSide('front',file);else if(cameraTarget==='back')loadXeroxSide('back',file);else loadFile([file]);await stopCamera();$('cameraDialog').close();},'image/png');
+ c.toBlob(async blob=>{const file=new File([blob],`camera-${Date.now()}.png`,{type:'image/png'});if(cameraTarget==='front')loadXeroxSide('front',file);else if(cameraTarget==='back')loadXeroxSide('back',file);else loadFile([file]);await stopCamera();if($('idCameraGuide')) $('idCameraGuide').hidden=true;if($('photoCameraGuide')) $('photoCameraGuide').hidden=true;$('cameraDialog').close();},'image/png');
 });
 
 $('browsePhotoBtn').addEventListener('click',e=>{e.preventDefault();$('fileInput').click();});
